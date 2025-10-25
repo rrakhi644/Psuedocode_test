@@ -1,108 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pseudocode Mock Test</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    h2 { text-align: center; color: #333; }
-    .question { margin-bottom: 15px; }
-    button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover { background: #0056b3; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pseudocode Mock Test</title>
+<style>
+  body { font-family: Arial; background: #f4f6f8; padding: 20px; }
+  .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 12px; }
+  .question { margin-bottom: 15px; }
+  button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;}
+  button:hover { background: #0056b3; }
+  a.form-link { display: inline-block; margin-top: 20px; background: green; color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Pseudocode Mock Test</h2>
+<div class="container">
+  <h2>Pseudocode Mock Test</h2>
 
-    <label>Name:</label><br>
-    <input type="text" id="name" required><br><br>
+  <label>Name:</label><br>
+  <input type="text" id="name" required><br><br>
 
-    <label>Roll Number:</label><br>
-    <input type="text" id="roll" required><br><br>
+  <label>Roll Number:</label><br>
+  <input type="text" id="roll" required><br><br>
 
-    <div id="quiz"></div>
-    <button type="button" onclick="submitQuiz()">Submit</button>
+  <div id="quiz"></div>
+  <button type="button" onclick="submitQuiz()">Submit</button>
+
+  <div id="resultLink" style="display:none;">
+    <p>If the form didn't open, please submit your score here:</p>
+    <a class="form-link" href="https://forms.gle/EW8V5DfwvFse9rXg7" target="_blank">Open Google Form</a>
   </div>
+</div>
 
-  <script>
-    const questions = [
-      { q: "1. Which keyword is used to declare a variable?", a: ["var", "let", "int", "declare"], correct: 2 },
-      { q: "2. What is the result of 5 % 2?", a: ["2", "1", "0", "3"], correct: 1 },
-      { q: "3. If x=5, what does x+=3 give?", a: ["8", "15", "2", "5"], correct: 0 },
-      { q: "4. Which loop runs at least once?", a: ["for", "while", "do-while", "none"], correct: 2 },
-      { q: "5. Recursion means:", a: ["Function calling itself", "Loop inside loop", "Function with return", "Infinite loop"], correct: 0 },
-      { q: "6. Accumulator variable is used to:", a: ["Store temporary result", "Store sum or total", "Control loop", "Stop program"], correct: 1 },
-      { q: "7. Until loop runs until:", a: ["Condition true", "Condition false", "Always", "Never"], correct: 1 },
-      { q: "8. Pointer holds:", a: ["Value", "Address", "Character", "Array"], correct: 1 },
-      { q: "9. Bitwise AND of 6 & 3 =", a: ["2", "4", "1", "3"], correct: 0 },
-      { q: "10. Stack follows:", a: ["FIFO", "LIFO", "LILO", "None"], correct: 1 },
-      { q: "11. Queue follows:", a: ["FIFO", "LIFO", "Random", "None"], correct: 0 },
-      { q: "12. What happens in stack overflow?", a: ["Data loss", "Program crash", "Extra memory added", "None"], correct: 1 },
-      { q: "13. Recursive function must have:", a: ["Loop", "Base condition", "Return type", "None"], correct: 1 },
-      { q: "14. Bitwise OR of 5 | 2 =", a: ["7", "3", "2", "1"], correct: 0 },
-      { q: "15. Variable used before declaration gives:", a: ["Error", "Warning", "0", "None"], correct: 0 },
-      { q: "16. Decision statement is:", a: ["for", "if", "while", "loop"], correct: 1 },
-      { q: "17. In queue, insertion happens at:", a: ["Front", "Rear", "Middle", "Top"], correct: 1 },
-      { q: "18. Stack operation to remove element:", a: ["push", "pop", "peek", "insert"], correct: 1 },
-      { q: "19. Bitwise XOR of 4 ^ 2 =", a: ["6", "2", "0", "4"], correct: 0 },
-      { q: "20. Loop that repeats 5 times uses:", a: ["for i=1 to 5", "while i<5", "until i>5", "all"], correct: 0 }
-    ];
+<script>
+const questions = [
+  { q: "1. Which keyword is used to declare a variable?", a: ["var","let","int","declare"], correct: 2 },
+  { q: "2. What is the result of 5 % 2?", a: ["2","1","0","3"], correct: 1 },
+  { q: "3. If x=5, what does x+=3 give?", a: ["8","15","2","5"], correct: 0 },
+  { q: "4. Which loop runs at least once?", a: ["for","while","do-while","none"], correct: 2 },
+  { q: "5. Recursion means:", a: ["Function calling itself","Loop inside loop","Function with return","Infinite loop"], correct: 0 },
+  { q: "6. Accumulator variable is used to:", a: ["Store temporary result","Store sum or total","Control loop","Stop program"], correct: 1 },
+  { q: "7. Until loop runs until:", a: ["Condition true","Condition false","Always","Never"], correct: 1 },
+  { q: "8. Pointer holds:", a: ["Value","Address","Character","Array"], correct: 1 },
+  { q: "9. Bitwise AND of 6 & 3 =", a: ["2","4","1","3"], correct: 0 },
+  { q: "10. Stack follows:", a: ["FIFO","LIFO","LILO","None"], correct: 1 },
+  { q: "11. Queue follows:", a: ["FIFO","LIFO","Random","None"], correct: 0 },
+  { q: "12. What happens in stack overflow?", a: ["Data loss","Program crash","Extra memory added","None"], correct: 1 },
+  { q: "13. Recursive function must have:", a: ["Loop","Base condition","Return type","None"], correct: 1 },
+  { q: "14. Bitwise OR of 5 | 2 =", a: ["7","3","2","1"], correct: 0 },
+  { q: "15. Variable used before declaration gives:", a: ["Error","Warning","0","None"], correct: 0 },
+  { q: "16. Decision statement is:", a: ["for","if","while","loop"], correct: 1 },
+  { q: "17. In queue, insertion happens at:", a: ["Front","Rear","Middle","Top"], correct: 1 },
+  { q: "18. Stack operation to remove element:", a: ["push","pop","peek","insert"], correct: 1 },
+  { q: "19. Bitwise XOR of 4 ^ 2 =", a: ["6","2","0","4"], correct: 0 },
+  { q: "20. Loop that repeats 5 times uses:", a: ["for i=1 to 5","while i<5","until i>5","all"], correct: 0 }
+];
 
-    const quizDiv = document.getElementById("quiz");
-    questions.forEach((item, i) => {
-      const qDiv = document.createElement("div");
-      qDiv.className = "question";
-      qDiv.innerHTML = `<b>${item.q}</b><br>` + 
-        item.a.map((opt, j) => 
-          `<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`
-        ).join("");
-      quizDiv.appendChild(qDiv);
-    });
+const quizDiv = document.getElementById("quiz");
+questions.forEach((item,i)=>{
+  const qDiv=document.createElement("div");
+  qDiv.className="question";
+  qDiv.innerHTML=`<b>${item.q}</b><br>`+item.a.map((opt,j)=>
+    `<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`).join("");
+  quizDiv.appendChild(qDiv);
+});
 
-    function submitQuiz() {
-      const name = document.getElementById("name").value.trim();
-      const roll = document.getElementById("roll").value.trim();
-      if (!name || !roll) return alert("Please enter name and roll number.");
+function submitQuiz(){
+  const name=document.getElementById("name").value.trim();
+  const roll=document.getElementById("roll").value.trim();
+  if(!name||!roll) return alert("Enter Name and Roll Number.");
 
-      let score = 0;
-      questions.forEach((item, i) => {
-        const answer = document.querySelector(`input[name=q${i}]:checked`);
-        if (answer && parseInt(answer.value) === item.correct) score++;
-      });
+  let score=0;
+  questions.forEach((item,i)=>{
+    const answer=document.querySelector(`input[name=q${i}]:checked`);
+    if(answer && parseInt(answer.value)===item.correct) score++;
+  });
 
-      alert(`You scored ${score} / ${questions.length}`);
+  // Updated alert message
+  alert(`Hi ${name}!\nYou scored ${score}/${questions.length}.\nThe Google Form will now open automatically to submit your score.`);
 
-      const scriptURL = "https://script.google.com/macros/s/AKfycbyeQFnsMENNI5lFQ8VpO2kJoXqzi1s7BmST2nsEp_X5grlPGUGdJ6H3BwYYCNa0U1wi/exec";
-      fetch(scriptURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, roll, score })
-      })
-      .then(() => alert("✅ Results submitted successfully!"))
-      .catch(() => alert("⚠️ Error sending results. Note your score manually."));
-    }
-  </script>
+  // --- THIS IS THE NEW LINE ---
+  // Automatically open the form in a new tab
+  window.open("https://forms.gle/EW8V5DfwvFse9rXg7", "_blank");
+  // --------------------------
+
+  // This part now acts as a backup in case the popup is blocked
+  document.getElementById("resultLink").style.display="block";
+}
+</script>
 </body>
 </html>
