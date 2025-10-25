@@ -5,87 +5,623 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pseudocode Mock Test</title>
 <style>
-  body { font-family: Arial; background: #f4f6f8; padding: 20px; }
-  .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 12px; }
-  .question { margin-bottom: 15px; }
-  button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;}
-  button:hover { background: #0056b3; }
-  a.form-link { display: inline-block; margin-top: 20px; background: green; color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    min-height: 100vh;
+    padding: 20px;
+  }
+  .container { 
+    max-width: 900px; 
+    margin: auto; 
+    background: white; 
+    padding: 40px; 
+    border-radius: 16px; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  }
+  h2 { 
+    color: #333; 
+    margin-bottom: 10px; 
+    font-size: 28px;
+    text-align: center;
+  }
+  .instructions {
+    background: #f0f7ff;
+    border-left: 4px solid #007bff;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+  }
+  .instructions h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  .instructions ol {
+    margin-left: 20px;
+    color: #555;
+  }
+  .instructions li {
+    margin-bottom: 8px;
+  }
+  .student-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
+  label { 
+    font-weight: 600; 
+    color: #333; 
+    display: block;
+    margin-bottom: 8px;
+  }
+  input[type="text"] { 
+    width: 100%; 
+    padding: 12px; 
+    border: 2px solid #ddd; 
+    border-radius: 8px; 
+    font-size: 16px;
+    transition: border 0.3s;
+    margin-bottom: 15px;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  .question { 
+    background: #fafafa;
+    padding: 20px; 
+    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s;
+  }
+  .question:hover {
+    border-color: #007bff;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.1);
+  }
+  .question b {
+    color: #333;
+    font-size: 17px;
+    display: block;
+    margin-bottom: 15px;
+  }
+  .option-label {
+    display: block;
+    padding: 10px 15px;
+    margin: 8px 0;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .option-label:hover {
+    background: #f0f7ff;
+    border-color: #007bff;
+  }
+  input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .btn-container {
+    text-align: center;
+    margin-top: 30px;
+  }
+  button { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white; 
+    border: none; 
+    padding: 15px 50px; 
+    border-radius: 30px; 
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s;
+  }
+  button:hover { 
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  }
+  button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    animation: fadeIn 0.3s;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .modal-content {
+    background: white;
+    margin: 10% auto;
+    padding: 40px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    animation: slideIn 0.3s;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  @keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .score-display {
+    font-size: 48px;
+    font-weight: bold;
+    color: #667eea;
+    margin: 20px 0;
+  }
+  .score-message {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  .progress-step {
+    background: #f0f7ff;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 15px 0;
+    border-left: 4px solid #28a745;
+  }
+  .step-number {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: #28a745;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  .action-btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 30px;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+  }
+  .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
+  }
+  .action-btn.secondary {
+    background: #007bff;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+  }
+  .action-btn.secondary:hover {
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+  }
+  .timer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-weight: bold;
+    color: #667eea;
+    font-size: 18px;
+  }
 </style>
 </head>
 <body>
+
+<div class="timer" id="timer">⏱️ Time: 00:00</div>
+
 <div class="container">
-  <h2>Pseudocode Mock Test</h2>
+  <h2>📝 Pseudocode Mock Test</h2>
+  
+  <div class="instructions">
+    <h3>📋 Test Instructions</h3>
+    <ol>
+      <li>Fill in your name and roll number</li>
+      <li>Answer all 20 questions carefully</li>
+      <li>Click "Submit Test" when finished</li>
+      <li>View your score and automatically submit via Google Form</li>
+      <li>After form submission, the answer key will open automatically</li>
+    </ol>
+  </div>
 
-  <label>Name:</label><br>
-  <input type="text" id="name" required><br><br>
+  <div class="student-info">
+    <label>👤 Student Name:</label>
+    <input type="text" id="name" placeholder="Enter your full name" required>
 
-  <label>Roll Number:</label><br>
-  <input type="text" id="roll" required><br><br>
+    <label>🎓 Roll Number:</label>
+    <input type="text" id="roll" placeholder="Enter your roll number" required>
+  </div>
 
   <div id="quiz"></div>
-  <button type="button" onclick="submitQuiz()">Submit</button>
+  
+  <div class="btn-container">
+    <button type="button" onclick="submitQuiz()">🚀 Submit Test</button>
+  </div>
+</div>
 
-  <div id="resultLink" style="display:none;">
-    <p>If the form didn't open, please submit your score here:</p>
-    <a class="form-link" href="https://forms.gle/EW8V5DfwvFse9rXg7" target="_blank">Open Google Form</a>
+<!-- Result Modal -->
+<div id="resultModal" class="modal">
+  <div class="modal-content">
+    <h2>🎉 Test Completed!</h2>
+    <div class="score-display" id="scoreDisplay"></div>
+    <div class="score-message" id="scoreMessage"></div>
+    
+    <div class="progress-step">
+      <span class="step-number">1</span>
+      <strong>Opening Google Form...</strong><br>
+      <small>Please submit your score in the form that just opened</small>
+    </div>
+    
+    <div class="progress-step">
+      <span class="step-number">2</span>
+      <strong>After submitting the form</strong><br>
+      <small>Click the button below to view the answer key</small>
+    </div>
+    
+    <div style="margin-top: 30px;">
+      <a class="action-btn" href="https://forms.gle/EW8V5DfwvFse9rXg7" target="_blank">
+        📝 Open Google Form (Backup)
+      </a>
+      <br>
+      <a class="action-btn secondary" id="answerKeyBtn" href="#" onclick="openAnswerKey()">
+        🔑 View Answer Key
+      </a>
+    </div>
   </div>
 </div>
 
 <script>
 const questions = [
-  { q: "1. Which keyword is used to declare a variable?", a: ["var","let","int","declare"], correct: 2 },
-  { q: "2. What is the result of 5 % 2?", a: ["2","1","0","3"], correct: 1 },
-  { q: "3. If x=5, what does x+=3 give?", a: ["8","15","2","5"], correct: 0 },
-  { q: "4. Which loop runs at least once?", a: ["for","while","do-while","none"], correct: 2 },
-  { q: "5. Recursion means:", a: ["Function calling itself","Loop inside loop","Function with return","Infinite loop"], correct: 0 },
-  { q: "6. Accumulator variable is used to:", a: ["Store temporary result","Store sum or total","Control loop","Stop program"], correct: 1 },
-  { q: "7. Until loop runs until:", a: ["Condition true","Condition false","Always","Never"], correct: 1 },
-  { q: "8. Pointer holds:", a: ["Value","Address","Character","Array"], correct: 1 },
-  { q: "9. Bitwise AND of 6 & 3 =", a: ["2","4","1","3"], correct: 0 },
-  { q: "10. Stack follows:", a: ["FIFO","LIFO","LILO","None"], correct: 1 },
-  { q: "11. Queue follows:", a: ["FIFO","LIFO","Random","None"], correct: 0 },
-  { q: "12. What happens in stack overflow?", a: ["Data loss","Program crash","Extra memory added","None"], correct: 1 },
-  { q: "13. Recursive function must have:", a: ["Loop","Base condition","Return type","None"], correct: 1 },
-  { q: "14. Bitwise OR of 5 | 2 =", a: ["7","3","2","1"], correct: 0 },
-  { q: "15. Variable used before declaration gives:", a: ["Error","Warning","0","None"], correct: 0 },
-  { q: "16. Decision statement is:", a: ["for","if","while","loop"], correct: 1 },
-  { q: "17. In queue, insertion happens at:", a: ["Front","Rear","Middle","Top"], correct: 1 },
-  { q: "18. Stack operation to remove element:", a: ["push","pop","peek","insert"], correct: 1 },
-  { q: "19. Bitwise XOR of 4 ^ 2 =", a: ["6","2","0","4"], correct: 0 },
-  { q: "20. Loop that repeats 5 times uses:", a: ["for i=1 to 5","while i<5","until i>5","all"], correct: 0 }
+  { 
+    q: "1. Which keyword is used to declare a variable?", 
+    a: ["var","let","int","declare"], 
+    correct: 2,
+    explanation: "In pseudocode and most programming languages, 'int' is used to declare integer variables. While 'var' and 'let' are used in JavaScript, 'int' is the standard keyword in pseudocode for declaring integer type variables."
+  },
+  { 
+    q: "2. What is the result of 5 % 2?", 
+    a: ["2","1","0","3"], 
+    correct: 1,
+    explanation: "The modulo operator (%) returns the remainder after division. 5 divided by 2 gives quotient 2 and remainder 1. So 5 % 2 = 1."
+  },
+  { 
+    q: "3. If x=5, what does x+=3 give?", 
+    a: ["8","15","2","5"], 
+    correct: 0,
+    explanation: "The compound assignment operator x+=3 is equivalent to x = x + 3. So if x=5, then x = 5 + 3 = 8."
+  },
+  { 
+    q: "4. Which loop runs at least once?", 
+    a: ["for","while","do-while","none"], 
+    correct: 2,
+    explanation: "A do-while loop always executes its body at least once because the condition is checked AFTER the first execution. For and while loops check the condition BEFORE execution, so they may not run at all."
+  },
+  { 
+    q: "5. Recursion means:", 
+    a: ["Function calling itself","Loop inside loop","Function with return","Infinite loop"], 
+    correct: 0,
+    explanation: "Recursion is when a function calls itself directly or indirectly. It's a programming technique used to solve problems by breaking them into smaller sub-problems. Example: factorial(n) = n * factorial(n-1)."
+  },
+  { 
+    q: "6. Accumulator variable is used to:", 
+    a: ["Store temporary result","Store sum or total","Control loop","Stop program"], 
+    correct: 1,
+    explanation: "An accumulator is a variable that accumulates (collects) values over iterations, typically used to store running totals or sums. Example: sum = sum + value in each iteration."
+  },
+  { 
+    q: "7. Until loop runs until:", 
+    a: ["Condition true","Condition false","Always","Never"], 
+    correct: 1,
+    explanation: "An 'until' loop continues running UNTIL the condition becomes true (i.e., it runs WHILE the condition is false). This is opposite to a 'while' loop which runs while the condition is true."
+  },
+  { 
+    q: "8. Pointer holds:", 
+    a: ["Value","Address","Character","Array"], 
+    correct: 1,
+    explanation: "A pointer is a variable that stores the memory address of another variable. It 'points to' the location in memory where data is stored, rather than storing the data itself."
+  },
+  { 
+    q: "9. Bitwise AND of 6 & 3 =", 
+    a: ["2","4","1","3"], 
+    correct: 0,
+    explanation: "Bitwise AND compares bits: 6 in binary is 110, 3 in binary is 011. AND operation: 110 & 011 = 010, which is 2 in decimal. Each bit position: 1&0=0, 1&1=1, 0&1=0."
+  },
+  { 
+    q: "10. Stack follows:", 
+    a: ["FIFO","LIFO","LILO","None"], 
+    correct: 1,
+    explanation: "Stack follows LIFO (Last In First Out) principle. The last element added (pushed) is the first one to be removed (popped). Think of a stack of plates - you add and remove from the top."
+  },
+  { 
+    q: "11. Queue follows:", 
+    a: ["FIFO","LIFO","Random","None"], 
+    correct: 0,
+    explanation: "Queue follows FIFO (First In First Out) principle. The first element added is the first one to be removed. Think of a line at a ticket counter - first person in line is served first."
+  },
+  { 
+    q: "12. What happens in stack overflow?", 
+    a: ["Data loss","Program crash","Extra memory added","None"], 
+    correct: 1,
+    explanation: "Stack overflow occurs when the stack memory is exhausted (usually due to excessive recursion or too many function calls). This causes the program to crash because there's no more memory to allocate for function calls."
+  },
+  { 
+    q: "13. Recursive function must have:", 
+    a: ["Loop","Base condition","Return type","None"], 
+    correct: 1,
+    explanation: "A recursive function must have a base condition (termination condition) to stop the recursion. Without it, the function would call itself infinitely, leading to stack overflow."
+  },
+  { 
+    q: "14. Bitwise OR of 5 | 2 =", 
+    a: ["7","3","2","1"], 
+    correct: 0,
+    explanation: "Bitwise OR compares bits: 5 in binary is 101, 2 in binary is 010. OR operation: 101 | 010 = 111, which is 7 in decimal. For OR: if either bit is 1, result is 1."
+  },
+  { 
+    q: "15. Variable used before declaration gives:", 
+    a: ["Error","Warning","0","None"], 
+    correct: 0,
+    explanation: "Using a variable before declaring it causes a compilation or runtime error in most programming languages. Variables must be declared before use to allocate memory and define their type."
+  },
+  { 
+    q: "16. Decision statement is:", 
+    a: ["for","if","while","loop"], 
+    correct: 1,
+    explanation: "'if' is a decision/selection statement that executes code based on whether a condition is true or false. 'for' and 'while' are iteration statements (loops), not decision statements."
+  },
+  { 
+    q: "17. In queue, insertion happens at:", 
+    a: ["Front","Rear","Middle","Top"], 
+    correct: 1,
+    explanation: "In a queue, insertion (enqueue) happens at the rear/back end, and deletion (dequeue) happens at the front end. This maintains the FIFO order."
+  },
+  { 
+    q: "18. Stack operation to remove element:", 
+    a: ["push","pop","peek","insert"], 
+    correct: 1,
+    explanation: "'pop' removes and returns the top element from the stack. 'push' adds an element, 'peek' views the top element without removing it, and 'insert' is not a standard stack operation."
+  },
+  { 
+    q: "19. Bitwise XOR of 4 ^ 2 =", 
+    a: ["6","2","0","4"], 
+    correct: 0,
+    explanation: "Bitwise XOR compares bits: 4 in binary is 100, 2 in binary is 010. XOR operation: 100 ^ 010 = 110, which is 6 in decimal. XOR gives 1 when bits are different, 0 when same."
+  },
+  { 
+    q: "20. Loop that repeats 5 times uses:", 
+    a: ["for i=1 to 5","while i<5","until i>5","all"], 
+    correct: 0,
+    explanation: "'for i=1 to 5' will execute exactly 5 times (i=1,2,3,4,5). 'while i<5' would execute 4 times if i starts at 1. The 'for' loop is the clearest and most direct way to repeat exactly 5 times."
+  }
 ];
 
+// Timer
+let startTime = Date.now();
+setInterval(() => {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+  const secs = (elapsed % 60).toString().padStart(2, '0');
+  document.getElementById('timer').textContent = `⏱️ Time: ${mins}:${secs}`;
+}, 1000);
+
+// Generate quiz
 const quizDiv = document.getElementById("quiz");
-questions.forEach((item,i)=>{
-  const qDiv=document.createElement("div");
-  qDiv.className="question";
-  qDiv.innerHTML=`<b>${item.q}</b><br>`+item.a.map((opt,j)=>
-    `<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`).join("");
+questions.forEach((item, i) => {
+  const qDiv = document.createElement("div");
+  qDiv.className = "question";
+  qDiv.innerHTML = `<b>${item.q}</b>` + 
+    item.a.map((opt, j) => 
+      `<label class="option-label">
+        <input type="radio" name="q${i}" value="${j}"> ${opt}
+      </label>`
+    ).join("");
   quizDiv.appendChild(qDiv);
 });
 
-function submitQuiz(){
-  const name=document.getElementById("name").value.trim();
-  const roll=document.getElementById("roll").value.trim();
-  if(!name||!roll) return alert("Enter Name and Roll Number.");
+function submitQuiz() {
+  const name = document.getElementById("name").value.trim();
+  const roll = document.getElementById("roll").value.trim();
+  
+  if (!name || !roll) {
+    alert("⚠️ Please enter your Name and Roll Number before submitting!");
+    return;
+  }
 
-  let score=0;
-  questions.forEach((item,i)=>{
-    const answer=document.querySelector(`input[name=q${i}]:checked`);
-    if(answer && parseInt(answer.value)===item.correct) score++;
+  let score = 0;
+  let unanswered = 0;
+  
+  questions.forEach((item, i) => {
+    const answer = document.querySelector(`input[name=q${i}]:checked`);
+    if (answer && parseInt(answer.value) === item.correct) {
+      score++;
+    } else if (!answer) {
+      unanswered++;
+    }
   });
 
-  // Updated alert message
-  alert(`Hi ${name}!\nYou scored ${score}/${questions.length}.\nThe Google Form will now open automatically to submit your score.`);
+  if (unanswered > 0) {
+    if (!confirm(`⚠️ You have ${unanswered} unanswered question(s). Do you want to submit anyway?`)) {
+      return;
+    }
+  }
 
-  // --- THIS IS THE NEW LINE ---
-  // Automatically open the form in a new tab
-  window.open("https://forms.gle/EW8V5DfwvFse9rXg7", "_blank");
-  // --------------------------
+  // Calculate percentage
+  const percentage = ((score / questions.length) * 100).toFixed(1);
+  
+  // Display results
+  document.getElementById('scoreDisplay').textContent = `${score}/${questions.length}`;
+  document.getElementById('scoreMessage').textContent = 
+    `${name}, you scored ${percentage}%!\n` +
+    (percentage >= 80 ? "🌟 Excellent!" : 
+     percentage >= 60 ? "👍 Good job!" : 
+     percentage >= 40 ? "📚 Keep practicing!" : 
+     "💪 Don't give up!");
 
-  // This part now acts as a backup in case the popup is blocked
-  document.getElementById("resultLink").style.display="block";
+  // Show modal
+  document.getElementById('resultModal').style.display = 'block';
+
+  // Auto-open Google Form
+  setTimeout(() => {
+    window.open("https://forms.gle/EW8V5DfwvFse9rXg7", "_blank", "noopener,noreferrer");
+  }, 500);
+}
+
+function openAnswerKey() {
+  // Create a comprehensive answer key page with explanations
+  const answerKeyWindow = window.open("", "_blank");
+  answerKeyWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Answer Key - Pseudocode Mock Test</title>
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+          padding: 40px 20px; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+        }
+        .container { 
+          max-width: 900px; 
+          margin: auto; 
+          background: white; 
+          padding: 40px; 
+          border-radius: 16px;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 { 
+          color: #667eea; 
+          text-align: center; 
+          margin-bottom: 10px;
+          font-size: 32px;
+        }
+        .subtitle {
+          text-align: center;
+          color: #666;
+          margin-bottom: 40px;
+          font-size: 16px;
+        }
+        .answer-card { 
+          padding: 25px; 
+          margin: 20px 0; 
+          background: #f8f9fa;
+          border-left: 5px solid #28a745; 
+          border-radius: 12px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          transition: all 0.3s;
+        }
+        .answer-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .question-text { 
+          font-size: 18px; 
+          font-weight: 600; 
+          color: #333;
+          margin-bottom: 15px;
+        }
+        .correct-answer { 
+          background: #d4edda;
+          color: #155724;
+          padding: 12px 15px;
+          border-radius: 8px;
+          font-weight: bold;
+          margin: 10px 0;
+          display: inline-block;
+        }
+        .explanation {
+          background: white;
+          padding: 15px;
+          border-radius: 8px;
+          color: #555;
+          line-height: 1.6;
+          margin-top: 10px;
+          border-left: 3px solid #667eea;
+        }
+        .explanation-label {
+          font-weight: 600;
+          color: #667eea;
+          margin-bottom: 8px;
+          display: block;
+        }
+        .print-btn {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #28a745;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 30px;
+          cursor: pointer;
+          font-weight: 600;
+          box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+          transition: all 0.3s;
+        }
+        .print-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
+        }
+        @media print {
+          body { background: white; padding: 20px; }
+          .print-btn { display: none; }
+          .answer-card { break-inside: avoid; }
+        }
+      </style>
+    </head>
+    <body>
+      <button class="print-btn" onclick="window.print()">🖨️ Print Answer Key</button>
+      <div class="container">
+        <h1>🔑 Answer Key</h1>
+        <p class="subtitle">Pseudocode Mock Test - Detailed Solutions</p>
+        ${questions.map((q, i) => `
+          <div class="answer-card">
+            <div class="question-text">${q.q}</div>
+            <div class="correct-answer">
+              ✓ Correct Answer: ${q.a[q.correct]}
+            </div>
+            <div class="explanation">
+              <span class="explanation-label">💡 Explanation:</span>
+              ${q.explanation}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </body>
+    </html>
+  `);
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('resultModal');
+  if (event.target === modal) {
+    if (confirm("Are you sure you want to close? Make sure you've submitted the Google Form!")) {
+      modal.style.display = "none";
+    }
+  }
 }
 </script>
 </body>
